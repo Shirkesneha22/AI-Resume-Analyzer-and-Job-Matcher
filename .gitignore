@@ -1,0 +1,26 @@
+# Node modules & build outputs
+node_modules/
+dist/
+dist-ssr/
+build/
+*.local
+
+# Python environment & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+.coverage
+
+# Environment files
+.env
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
