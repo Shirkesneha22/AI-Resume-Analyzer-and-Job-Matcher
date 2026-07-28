@@ -33,7 +33,7 @@ class Settings:
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     PORT: int = int(os.getenv("PORT", "8000"))
     HOST: str = os.getenv("HOST", "0.0.0.0")
-    CORS_ORIGINS: list = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173").split(",")
+    CORS_ORIGINS: list = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "https://smartresumeanalyze.netlify.app,http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173").split(",") if origin.strip()]
 
     SUPPORTED_ROLES: list = [
         "Frontend Developer",
