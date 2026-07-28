@@ -1,3 +1,4 @@
+import concurrent.futures
 import json
 import logging
 import requests
@@ -24,6 +25,25 @@ class GeminiService:
                 self.model = genai.GenerativeModel("gemini-2.0-flash")
             except Exception as e:
                 logger.warning(f"Failed to initialize google.generativeai SDK: {e}")
+
+    def _generate_content_with_timeout(self, prompt: str, generation_config: dict = None):
+        """Execute self.model.generate_content in a ThreadPoolExecutor with a 20-second timeout."""
+        kwargs = {}
+        if generation_config:
+            kwargs["generation_config"] = generation_config
+        kwargs["request_options"] = {"timeout": 20}
+
+        def _call():
+            try:
+                return self.model.generate_content(prompt, **kwargs)
+            except TypeError:
+                # Fallback if request_options is not supported by installed SDK version
+                kwargs.pop("request_options", None)
+                return self.model.generate_content(prompt, **kwargs)
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(_call)
+            return future.result(timeout=20)
 
     def _call_gemini_rest(self, prompt: str, is_json: bool = False) -> str:
         """Fallback direct REST API call to Gemini endpoints."""
@@ -58,9 +78,11 @@ class GeminiService:
             # 1. Try SDK if available
             if HAS_GENAI_SDK and hasattr(self, 'model'):
                 try:
-                    res = self.model.generate_content(prompt)
+                    res = self._generate_content_with_timeout(prompt)
                     if res and res.text:
                         return res.text.strip()
+                except (concurrent.futures.TimeoutError, TimeoutError):
+                    logger.warning("Gemini SDK JD generation timed out after 20s")
                 except Exception as e:
                     logger.warning(f"Gemini SDK JD generation error: {e}")
 
@@ -91,12 +113,14 @@ class GeminiService:
             # 1. Try SDK if available
             if HAS_GENAI_SDK and hasattr(self, 'model'):
                 try:
-                    res = self.model.generate_content(
+                    res = self._generate_content_with_timeout(
                         prompt,
                         generation_config={"response_mime_type": "application/json"}
                     )
                     if res and res.text:
                         raw_json_str = res.text.strip()
+                except (concurrent.futures.TimeoutError, TimeoutError):
+                    logger.warning("Gemini SDK analysis timed out after 20s")
                 except Exception as e:
                     logger.warning(f"Gemini SDK analysis error: {e}")
 
