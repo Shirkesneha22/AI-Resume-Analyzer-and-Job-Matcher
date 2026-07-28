@@ -21,13 +21,13 @@ class GeminiService:
         if self.is_configured and HAS_GENAI_SDK:
             try:
                 genai.configure(api_key=self.api_key)
-                self.model = genai.GenerativeModel("gemini-1.5-flash")
+                self.model = genai.GenerativeModel("gemini-2.0-flash")
             except Exception as e:
                 logger.warning(f"Failed to initialize google.generativeai SDK: {e}")
 
     def _call_gemini_rest(self, prompt: str, is_json: bool = False) -> str:
         """Fallback direct REST API call to Gemini endpoints."""
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={self.api_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={self.api_key}"
         payload = {
             "contents": [{"parts": [{"text": prompt}]}]
         }
@@ -35,16 +35,19 @@ class GeminiService:
             payload["generationConfig"] = {"responseMimeType": "application/json"}
 
         headers = {"Content-Type": "application/json"}
-        resp = requests.post(url, json=payload, headers=headers, timeout=30)
-        if resp.status_code == 200:
-            data = resp.json()
-            candidates = data.get("candidates", [])
-            if candidates and "content" in candidates[0]:
-                parts = candidates[0]["content"].get("parts", [])
-                if parts:
-                    return parts[0].get("text", "")
-        else:
-            logger.warning(f"Gemini REST API error {resp.status_code}: {resp.text}")
+        try:
+            resp = requests.post(url, json=payload, headers=headers, timeout=15)
+            if resp.status_code == 200:
+                data = resp.json()
+                candidates = data.get("candidates", [])
+                if candidates and "content" in candidates[0]:
+                    parts = candidates[0]["content"].get("parts", [])
+                    if parts:
+                        return parts[0].get("text", "")
+            else:
+                logger.warning(f"Gemini REST API status {resp.status_code}: {resp.text[:200]}")
+        except Exception as e:
+            logger.warning(f"Gemini REST API exception: {e}")
         return ""
 
     def generate_job_description(self, role: str) -> str:
@@ -69,7 +72,7 @@ class GeminiService:
             except Exception as e:
                 logger.warning(f"Gemini REST JD generation error: {e}")
 
-        # Fallback if API key missing or call fails
+        # Fallback if API key missing or call fails/quota exceeded
         return FALLBACK_JDS.get(
             role, 
             f"Job Overview:\nWe are seeking a qualified {role} with industry experience, strong technical problem-solving skills, and expertise in modern development workflows and best practices."
