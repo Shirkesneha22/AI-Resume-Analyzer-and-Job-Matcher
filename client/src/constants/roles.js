@@ -1,19 +1,21 @@
-export const PRESET_ROLES = [
+export const ROLES = [
+  "Full Stack Developer",
   "Frontend Developer",
   "Backend Developer",
-  "Python Developer",
-  "React Developer",
-  "Full Stack Developer",
   "AI Engineer",
-  "Machine Learning Engineer",
   "Data Scientist",
-  "Software Engineer",
-  "SDE",
-  "Web Developer",
-  "Django Developer",
-  "FastAPI Developer",
-  "Node.js Developer",
-  "Java Developer",
+  "Data Analyst",
   "DevOps Engineer",
-  "Cloud Engineer"
+  "Software Engineer (SDE)",
+  "React Developer",
+  "Python Developer",
+  "Java Developer",
+  "Mobile Developer",
+  "Cloud Engineer",
+  "QA Engineer",
+  "ML Engineer",
+  "Cybersecurity Analyst",
+  "Product Analyst"
 ];
+
+export const PRESET_ROLES = ROLES;
