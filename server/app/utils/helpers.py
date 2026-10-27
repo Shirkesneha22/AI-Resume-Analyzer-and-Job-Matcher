@@ -40,6 +40,84 @@ Responsibilities:
 Requirements:
 - AI/ML: Python, PyTorch, TensorFlow, Scikit-Learn, Gemini API, OpenAI, Hugging Face, RAG, Vector DBs (Chroma, Pinecone).
 - Software Engineering: FastAPI, Docker, Git, REST APIs, System Design.
+""",
+    "Full Stack Developer": """
+Job Overview:
+We are seeking an experienced Full Stack Developer proficient in React, Node.js or Python, database architecture, and REST API development.
+
+Responsibilities:
+- Build dynamic client-facing web applications using React.js and modern state management.
+- Develop robust, scalable backend APIs using Python (FastAPI/Django) or Node.js.
+- Manage relational and NoSQL databases (PostgreSQL, MongoDB, Redis).
+- Deploy containerized applications with Docker and modern CI/CD pipelines.
+
+Requirements:
+- Frontend: React, JavaScript, TypeScript, HTML5, CSS3, Tailwind CSS.
+- Backend: Python, FastAPI, Django, Node.js, Express, PostgreSQL, MongoDB.
+- DevOps & Tools: Docker, Git, REST APIs, CI/CD, AWS Cloud.
+""",
+    "Python Developer": """
+Job Overview:
+Looking for a talented Python Developer to engineer backend services, data pipelines, and scalable APIs.
+
+Responsibilities:
+- Architect and maintain REST APIs using FastAPI, Django, or Flask.
+- Write clean, modular, test-driven Python code with database integration (PostgreSQL, SQLAlchemy).
+- Optimize queries, caching (Redis), and asynchronous processing.
+
+Requirements:
+- Languages & Frameworks: Python 3, FastAPI, Django, Flask, SQLAlchemy.
+- Databases & Tools: PostgreSQL, MySQL, Redis, Docker, Git, Unit Testing.
+""",
+    "React Developer": """
+Job Overview:
+Looking for a React Developer to build high-performance, accessible, and responsive user interfaces.
+
+Responsibilities:
+- Build single-page web applications using React, Next.js, and TypeScript.
+- Integrate RESTful and GraphQL APIs with robust error handling and state management.
+- Ensure cross-browser compatibility, responsive mobile layouts, and web performance.
+
+Requirements:
+- Skills: React.js, Next.js, TypeScript, JavaScript, Redux, Tailwind CSS, HTML5, CSS3.
+- Tools: Vite, Webpack, Git, Jest, Responsive Web Design.
+""",
+    "Software Engineer": """
+Job Overview:
+Seeking a Software Engineer with strong computer science fundamentals, data structures, and problem-solving skills.
+
+Responsibilities:
+- Design, develop, test, and deploy enterprise software applications.
+- Collaborate across cross-functional engineering teams using Agile/Scrum.
+- Participate in code reviews, design discussions, and system architecture planning.
+
+Requirements:
+- Languages: Python, Java, JavaScript, TypeScript, or C++.
+- Concepts: Object-Oriented Design, System Design, REST APIs, Databases, Git, CI/CD.
+""",
+    "Data Scientist": """
+Job Overview:
+Seeking a Data Scientist to extract insights, train machine learning models, and analyze complex datasets.
+
+Responsibilities:
+- Build predictive and classification models using Scikit-Learn, PyTorch, or TensorFlow.
+- Perform exploratory data analysis, feature engineering, and statistical modeling.
+- Communicate data-driven insights through dashboards and visualizations.
+
+Requirements:
+- Skills: Python, Pandas, NumPy, Scikit-Learn, SQL, Data Visualization, Statistics.
+""",
+    "DevOps Engineer": """
+Job Overview:
+Looking for a DevOps Engineer to automate deployment pipelines, manage cloud infrastructure, and ensure high availability.
+
+Responsibilities:
+- Build and maintain CI/CD pipelines using GitHub Actions or Jenkins.
+- Manage containerized infrastructure using Docker and Kubernetes on AWS/GCP.
+- Monitor system health, performance, security, and logging.
+
+Requirements:
+- Skills: Docker, Kubernetes, AWS, Linux, Terraform, CI/CD, Nginx, Shell scripting.
 """
 }
 

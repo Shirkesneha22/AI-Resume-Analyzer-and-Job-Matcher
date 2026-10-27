@@ -7,7 +7,7 @@ const apiClient = axios.create({
   headers: {
     'Accept': 'application/json',
   },
-  timeout: 60000, // 60 seconds timeout for Gemini processing
+  timeout: 120000, // 120 seconds timeout for Render cold-starts & Gemini processing
 });
 
 export const fetchHealth = async () => {

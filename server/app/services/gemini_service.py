@@ -27,11 +27,11 @@ class GeminiService:
                 logger.warning(f"Failed to initialize google.generativeai SDK: {e}")
 
     def _generate_content_with_timeout(self, prompt: str, generation_config: dict = None):
-        """Execute self.model.generate_content in a ThreadPoolExecutor with a 20-second timeout."""
+        """Execute self.model.generate_content in a ThreadPoolExecutor with a 10-second timeout."""
         kwargs = {}
         if generation_config:
             kwargs["generation_config"] = generation_config
-        kwargs["request_options"] = {"timeout": 20}
+        kwargs["request_options"] = {"timeout": 10}
 
         def _call():
             try:
@@ -43,7 +43,7 @@ class GeminiService:
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
             future = executor.submit(_call)
-            return future.result(timeout=20)
+            return future.result(timeout=10)
 
     def _call_gemini_rest(self, prompt: str, is_json: bool = False) -> str:
         """Fallback direct REST API call to Gemini endpoints."""
@@ -74,6 +74,9 @@ class GeminiService:
 
     def generate_job_description(self, role: str) -> str:
         """Generate a realistic Job Description for a given role via Gemini or fallback."""
+        if role in FALLBACK_JDS:
+            return FALLBACK_JDS[role]
+
         if self.is_configured:
             prompt = SYSTEM_JD_GENERATION_PROMPT.format(role=role)
             
