@@ -29,14 +29,20 @@ export const AnalysisForm = ({ analyzerHook }) => {
     <div className="glass-card rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl max-w-3xl mx-auto space-y-8">
       
       <div className="border-b border-slate-800 pb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-indigo-400" />
-            Resume ATS Match Evaluator
-          </h2>
-          <p className="text-slate-400 text-sm mt-1">
-            Upload candidate resume and select target role for instant AI analysis.
-          </p>
+        <div className="flex items-center gap-3">
+          <img 
+            src="/logo.png" 
+            alt="MatchCraft AI Logo" 
+            className="w-12 h-12 rounded-2xl object-contain bg-white/10 p-1 border border-indigo-500/30 shadow-lg shadow-indigo-500/10" 
+          />
+          <div>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              Resume ATS Match Evaluator
+            </h2>
+            <p className="text-slate-400 text-sm mt-0.5">
+              Upload candidate resume and select target role for instant AI analysis.
+            </p>
+          </div>
         </div>
 
         <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl font-medium">

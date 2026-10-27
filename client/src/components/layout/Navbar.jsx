@@ -12,11 +12,15 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-          <div className="p-2 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <span>MatchCraft AI</span>
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <img 
+            src="/logo.png" 
+            alt="MatchCraft AI Logo" 
+            className="w-9 h-9 rounded-xl object-contain bg-white/10 p-0.5 border border-indigo-500/30 group-hover:scale-105 transition-transform" 
+          />
+          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+            MatchCraft AI
+          </span>
         </Link>
 
         {/* Navigation Links */}

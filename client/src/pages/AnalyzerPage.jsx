@@ -35,14 +35,21 @@ export const AnalyzerPage = () => {
             
             {/* Candidate Header Summary */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-4 text-slate-300 text-xs sm:text-sm gap-2">
-              <div>
-                <span className="font-bold text-white text-lg block">
-                  {results.parsed_contact_info?.name || 'Uploaded Candidate Resume'}
-                </span>
-                <span className="text-slate-400">
-                  {results.parsed_contact_info?.email && `Email: ${results.parsed_contact_info.email}`}
-                  {results.parsed_contact_info?.phone && ` • Phone: ${results.parsed_contact_info.phone}`}
-                </span>
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/logo.png" 
+                  alt="MatchCraft AI Logo" 
+                  className="w-10 h-10 rounded-xl object-contain bg-white/10 p-0.5 border border-indigo-500/30 flex-shrink-0" 
+                />
+                <div>
+                  <span className="font-bold text-white text-lg block">
+                    {results.parsed_contact_info?.name || 'Uploaded Candidate Resume'}
+                  </span>
+                  <span className="text-slate-400">
+                    {results.parsed_contact_info?.email && `Email: ${results.parsed_contact_info.email}`}
+                    {results.parsed_contact_info?.phone && ` • Phone: ${results.parsed_contact_info.phone}`}
+                  </span>
+                </div>
               </div>
               <div className="text-right">
                 <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded-xl font-semibold">

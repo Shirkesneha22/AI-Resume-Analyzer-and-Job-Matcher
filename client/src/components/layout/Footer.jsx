@@ -7,8 +7,12 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
         
         <div className="md:col-span-2">
-          <div className="flex items-center gap-2 text-lg font-bold text-white mb-3">
-            <Sparkles className="w-5 h-5 text-indigo-400" />
+          <div className="flex items-center gap-2.5 text-lg font-bold text-white mb-3">
+            <img 
+              src="/logo.png" 
+              alt="MatchCraft AI Logo" 
+              className="w-8 h-8 rounded-lg object-contain bg-white/10 p-0.5 border border-indigo-500/30" 
+            />
             <span>MatchCraft AI</span>
           </div>
           <p className="text-sm text-slate-400 max-w-sm mb-4">

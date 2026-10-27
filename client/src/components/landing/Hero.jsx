@@ -18,9 +18,9 @@ export const Hero = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs sm:text-sm font-medium mb-6"
+          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs sm:text-sm font-medium mb-6"
         >
-          <Sparkles className="w-4 h-4 text-indigo-400" />
+          <img src="/logo.png" alt="MatchCraft AI" className="w-5 h-5 rounded-md object-contain" />
           <span>Next-Gen Enterprise ATS Engine & Gemini AI Integration</span>
         </motion.div>
 
