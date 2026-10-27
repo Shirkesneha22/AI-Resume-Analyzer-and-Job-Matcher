@@ -30,7 +30,7 @@ Job Description / Target Role:
 Produce a comprehensive evaluation strictly in JSON format.
 Return ONLY valid JSON matching this exact JSON structure (no surrounding markdown text or code blocks if using JSON mode, otherwise wrap in valid JSON):
 
-{
+{{
   "summary": "Professional 3-4 sentence overview of candidate suitability for this position.",
   "strengths": ["Strength 1", "Strength 2", "Strength 3", "Strength 4"],
   "weaknesses": ["Weakness 1", "Weakness 2", "Weakness 3"],
@@ -41,5 +41,5 @@ Return ONLY valid JSON matching this exact JSON structure (no surrounding markdo
   "roadmap": ["Week 1-2: Core gap bridging", "Week 3-4: Hands-on project build", "Week 5-6: System architecture & mock interviews"],
   "career_advice": "Actionable strategy for candidate's long-term career growth in this domain.",
   "suggestions": ["Formatting improvement 1", "ATS keyword insertion tip 2", "Quantified metric advice 3"]
-}
+}}
 """

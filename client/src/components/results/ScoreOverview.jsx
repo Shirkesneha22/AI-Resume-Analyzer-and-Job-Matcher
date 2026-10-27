@@ -70,7 +70,7 @@ export const ScoreOverview = ({ results }) => {
               </div>
             </div>
 
-            <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${getScoreColor(score)}">
+            <div className={`mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${getScoreColor(score)}`}>
               <Award className="w-4 h-4" />
               {score >= 80 ? 'High ATS Match' : score >= 60 ? 'Moderate Match' : 'Needs Optimization'}
             </div>

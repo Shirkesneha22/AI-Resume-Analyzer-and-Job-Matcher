@@ -22,7 +22,7 @@ class GeminiService:
         if self.is_configured and HAS_GENAI_SDK:
             try:
                 genai.configure(api_key=self.api_key)
-                self.model = genai.GenerativeModel("gemini-2.0-flash")
+                self.model = genai.GenerativeModel("gemini-flash-latest")
             except Exception as e:
                 logger.warning(f"Failed to initialize google.generativeai SDK: {e}")
 
@@ -47,27 +47,29 @@ class GeminiService:
 
     def _call_gemini_rest(self, prompt: str, is_json: bool = False) -> str:
         """Fallback direct REST API call to Gemini endpoints."""
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={self.api_key}"
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}]
-        }
-        if is_json:
-            payload["generationConfig"] = {"responseMimeType": "application/json"}
+        candidate_models = ["gemini-flash-latest", "gemini-3.8-flash"]
+        for model_name in candidate_models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={self.api_key}"
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}]
+            }
+            if is_json:
+                payload["generationConfig"] = {"responseMimeType": "application/json"}
 
-        headers = {"Content-Type": "application/json"}
-        try:
-            resp = requests.post(url, json=payload, headers=headers, timeout=15)
-            if resp.status_code == 200:
-                data = resp.json()
-                candidates = data.get("candidates", [])
-                if candidates and "content" in candidates[0]:
-                    parts = candidates[0]["content"].get("parts", [])
-                    if parts:
-                        return parts[0].get("text", "")
-            else:
-                logger.warning(f"Gemini REST API status {resp.status_code}: {resp.text[:200]}")
-        except Exception as e:
-            logger.warning(f"Gemini REST API exception: {e}")
+            headers = {"Content-Type": "application/json"}
+            try:
+                resp = requests.post(url, json=payload, headers=headers, timeout=12)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    candidates = data.get("candidates", [])
+                    if candidates and "content" in candidates[0]:
+                        parts = candidates[0]["content"].get("parts", [])
+                        if parts:
+                            return parts[0].get("text", "")
+                else:
+                    logger.warning(f"Gemini REST API ({model_name}) status {resp.status_code}: {resp.text[:200]}")
+            except Exception as e:
+                logger.warning(f"Gemini REST API ({model_name}) exception: {e}")
         return ""
 
     def generate_job_description(self, role: str) -> str:
@@ -103,44 +105,47 @@ class GeminiService:
     def analyze_resume_with_ai(self, resume_text: str, job_description: str) -> dict:
         """Perform full AI reasoning analysis on resume vs JD using Gemini."""
         if self.is_configured:
-            prompt = SYSTEM_RESUME_ANALYSIS_PROMPT.format(
-                resume_text=resume_text[:4000],
-                job_description=job_description[:3000]
-            )
+            try:
+                prompt = SYSTEM_RESUME_ANALYSIS_PROMPT.format(
+                    resume_text=resume_text[:4000],
+                    job_description=job_description[:3000]
+                )
 
-            raw_json_str = ""
-            
-            # 1. Try SDK if available
-            if HAS_GENAI_SDK and hasattr(self, 'model'):
-                try:
-                    res = self._generate_content_with_timeout(
-                        prompt,
-                        generation_config={"response_mime_type": "application/json"}
-                    )
-                    if res and res.text:
-                        raw_json_str = res.text.strip()
-                except (concurrent.futures.TimeoutError, TimeoutError):
-                    logger.warning("Gemini SDK analysis timed out after 20s")
-                except Exception as e:
-                    logger.warning(f"Gemini SDK analysis error: {e}")
+                raw_json_str = ""
+                
+                # 1. Try SDK if available
+                if HAS_GENAI_SDK and hasattr(self, 'model'):
+                    try:
+                        res = self._generate_content_with_timeout(
+                            prompt,
+                            generation_config={"response_mime_type": "application/json"}
+                        )
+                        if res and res.text:
+                            raw_json_str = res.text.strip()
+                    except (concurrent.futures.TimeoutError, TimeoutError):
+                        logger.warning("Gemini SDK analysis timed out after 20s")
+                    except Exception as e:
+                        logger.warning(f"Gemini SDK analysis error: {e}")
 
-            # 2. Try REST API if SDK failed or not available
-            if not raw_json_str:
-                try:
-                    raw_json_str = self._call_gemini_rest(prompt, is_json=True)
-                except Exception as e:
-                    logger.warning(f"Gemini REST analysis error: {e}")
+                # 2. Try REST API if SDK failed or not available
+                if not raw_json_str:
+                    try:
+                        raw_json_str = self._call_gemini_rest(prompt, is_json=True)
+                    except Exception as e:
+                        logger.warning(f"Gemini REST analysis error: {e}")
 
-            if raw_json_str:
-                try:
-                    clean_text = raw_json_str.strip()
-                    if clean_text.startswith("```json"):
-                        clean_text = clean_text[7:]
-                    if clean_text.endswith("```"):
-                        clean_text = clean_text[:-3]
-                    return json.loads(clean_text)
-                except Exception as e:
-                    logger.warning(f"Failed to parse Gemini JSON output: {e}")
+                if raw_json_str:
+                    try:
+                        clean_text = raw_json_str.strip()
+                        if clean_text.startswith("```json"):
+                            clean_text = clean_text[7:]
+                        if clean_text.endswith("```"):
+                            clean_text = clean_text[:-3]
+                        return json.loads(clean_text)
+                    except Exception as e:
+                        logger.warning(f"Failed to parse Gemini JSON output: {e}")
+            except Exception as e:
+                logger.warning(f"Unexpected error during AI analysis: {e}")
 
         # Heuristic fallback structure if API key not set or quota exceeded
         return {
